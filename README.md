@@ -1,2 +1,2 @@
 # 4chanDownloader
-script using selenium to download content from 4chan forum
+script using net core 3.1 & HttpClient to fetch all media in a thread.
