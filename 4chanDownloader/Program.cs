@@ -12,14 +12,6 @@ namespace _4chanDownload
         static void Main(string[] args)
         {
 
-            //ChromeOptions opts = new ChromeOptions();
-            //opts.AddArguments("headless");
-            //ChromeDriver browser = new ChromeDriver(".", opts);
-            //browser.Url = url;
-
-            //browser.FindElements(By.XPath("//a[@class='fileThumb']"));
-            //Console.ReadKey();
-
             String url = "";
 
             if (args == null || args.Length == 0)
@@ -59,8 +51,9 @@ namespace _4chanDownload
             {
                 string[] urlsplit = URL4chan.Split("/");
                 string foldername = urlsplit[urlsplit.Length - 1];
+                string board = urlsplit[urlsplit.Length - 3];
                 Console.WriteLine(imagesurls.Count + " encontradas en el hilo. Descargando... ");
-                string DirToDownload = Path.Combine(Directory.GetCurrentDirectory(), foldername);
+                string DirToDownload = Path.Combine(Directory.GetCurrentDirectory(), board, foldername);
                 if (!Directory.Exists(DirToDownload))
                 {
                     Directory.CreateDirectory(DirToDownload);
@@ -70,6 +63,10 @@ namespace _4chanDownload
                     DownloadImage(imgurl, DirToDownload);
                 }
                 Console.WriteLine("Descarga completa.");
+            }
+            else
+            {
+                Console.WriteLine("No se encontraron links, probablemente el programador no hizo bien el programa xd");
             }
 
 
@@ -99,9 +96,27 @@ namespace _4chanDownload
 
             string imgname = imgURL.Split('/')[4];
             Console.Write(imgname + "...");
-            var imgBytes = Client.GetByteArrayAsync(imgURL).Result;
-            File.WriteAllBytes(Path.Combine(DirToDownload, imgname), imgBytes);
-            Console.WriteLine("OK");
+            string filePath = Path.Combine(DirToDownload, imgname);
+            if (!File.Exists(filePath))
+            {
+                var imgBytes = Client.GetByteArrayAsync(imgURL).Result;
+                File.WriteAllBytes(filePath, imgBytes);
+                Console.WriteLine("OK");
+            }
+            else
+            {
+                Console.WriteLine("File Exists, Skipping");
+            }
+
         }
     }
 }
+
+
+//ChromeOptions opts = new ChromeOptions();
+//opts.AddArguments("headless");
+//ChromeDriver browser = new ChromeDriver(".", opts);
+//browser.Url = url;
+
+//browser.FindElements(By.XPath("//a[@class='fileThumb']"));
+//Console.ReadKey();

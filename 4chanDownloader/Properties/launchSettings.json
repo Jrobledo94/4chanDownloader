@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "4chanDownloader": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}
