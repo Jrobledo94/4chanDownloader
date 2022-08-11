@@ -9,6 +9,7 @@ namespace _4chanDownload
     class Program
     {
         private static HttpClient Client = new HttpClient();
+        static int counter;
         static void Main(string[] args)
         {
 
@@ -58,9 +59,12 @@ namespace _4chanDownload
                 {
                     Directory.CreateDirectory(DirToDownload);
                 }
+                int imagenumber = imagesurls.Count;
+                counter = 1;
                 foreach (var imgurl in imagesurls)
                 {
-                    DownloadImage(imgurl, DirToDownload);
+                    DownloadImage(imgurl, DirToDownload, imagenumber);
+
                 }
                 Console.WriteLine("Descarga completa.");
             }
@@ -90,12 +94,12 @@ namespace _4chanDownload
             return doc;
         }
 
-        private static void DownloadImage(string imgURL, string DirToDownload)
+        private static void DownloadImage(string imgURL, string DirToDownload, int NumberOfImages)
         {
             //TODO: add try/catch
 
             string imgname = imgURL.Split('/')[4];
-            Console.Write(imgname + "...");
+            Console.Write(counter++ + "/" + NumberOfImages + "\t" + imgname + "...");
             string filePath = Path.Combine(DirToDownload, imgname);
             if (!File.Exists(filePath))
             {
